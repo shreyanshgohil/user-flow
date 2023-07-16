@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String             @id @default(uuid())
+  firstName           String?
+  lastName            String?
+  email               String             @unique
+  phone               String? //unique or not
+  password            String?
+  isVerified          Boolean            @default(false)
+  profileImage        String?
+  forgotPasswordToken String? // need to check what will be gone inserted into the database
+  organizations       OrganizationRole[]
+  invitedBy           Invitations[]      @relation("invitedBy")
+  invitedTo           Invitations[]      @relation("invitedTo")
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+}
+
+model Organization {
+  id                 String             @id @default(uuid())
+  tenantName         String?
+  tenantID           String?
+  accessToken        String?
+  refreshToken       String?
+  accessTokenUTCDate DateTime?
+  customerLastSync   DateTime?
+  vendorLastSync     DateTime?
+  users              OrganizationRole[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  Invitations        Invitations[]
+}
+
+model Role {
+  id              String             @id @default(uuid())
+  roleName        String
+  roleDescription String
+  isAdminRole     Boolean            @default(false)
+  users           OrganizationRole[]
+  permissions     Permission[]
+  invitations     Invitations[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model OrganizationRole {
+  id             String        @id @default(uuid())
+  user           User          @relation(fields: [userId], references: [id])
+  userId         String
+  role           Role          @relation(fields: [roleId], references: [id])
+  roleId         String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId String
+  invitations    Invitations[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Permission {
+  id             String   @id @default(uuid())
+  permissionName String
+  all            Boolean  @default(false)
+  view           Boolean  @default(false)
+  edit           Boolean  @default(false)
+  delete         Boolean  @default(false)
+  role           Role     @relation(fields: [roleId], references: [id])
+  roleId         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Invitations {
+  id                 String            @id @default(uuid())
+  invitedBy          User              @relation("invitedBy", fields: [invitedByUserId], references: [id])
+  invitedByUserId    String
+  invitedTo          User              @relation("invitedTo", fields: [invitedToUserId], references: [id])
+  invitedToUserId    String
+  role               Role              @relation(fields: [roleId], references: [id])
+  roleId             String
+  organization       Organization      @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  OrganizationRole   OrganizationRole? @relation(fields: [organizationRoleId], references: [id])
+  organizationRoleId String?
+  invitationStatus   InvitationStatus
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+enum InvitationStatus {
+  Pending
+  Accepted
+  Rejected
+}
+
+// enum PermissionType {
+//   All
+//   View
+//   Edit
+//   Delete
+// }
+
+// enum Module {
+//   Dashboard
+//   EmployeeCost
+//   CostAllocations
+//   JournalsEntries
+//   TimeActivities
+//   TimeLogs
+//   TimeSheets
+//   Settings
+//   Roles
+//   Users
+//   Integartions
+//   Configurations
+//   Subscriptions
+//   CustomRules
+//   Reports
+//   TimeSummary
+//   PayrollSummary
+//   CustomerOverview
+// }

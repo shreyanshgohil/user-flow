@@ -1,0 +1,76 @@
+{
+  "loginFields": [
+    {
+      "title": "Email",
+      "id": "email",
+      "type": "text",
+      "name": "email",
+      "defaultValue": ""
+    },
+    {
+      "title": "Password",
+      "id": "password",
+      "type": "password",
+      "name": "password",
+      "defaultValue": ""
+    }
+  ],
+  "registerCompany": [
+    {
+      "title": "Organization name",
+      "id": "organizationName",
+      "type": "text",
+      "name": "organizationName",
+      "defaultValue": ""
+    }
+  ],
+  "creteRole": [
+    {
+      "title": "Role name",
+      "id": "roleName",
+      "type": "text",
+      "name": "roleName",
+      "defaultValue": ""
+    }
+  ],
+  "registerFields": [
+    {
+      "title": "First name",
+      "id": "firstName",
+      "type": "text",
+      "name": "firstName",
+      "defaultValue": ""
+    },
+    {
+      "title": "Last name",
+      "id": "lastName",
+      "type": "text",
+      "name": "lastName",
+      "defaultValue": ""
+    },
+    {
+      "title": "Email",
+      "id": "email",
+      "type": "text",
+      "name": "email",
+      "defaultValue": ""
+    },
+    {
+      "title": "Password",
+      "id": "password",
+      "type": "password",
+      "name": "password",
+      "errorMessage": "Please enter valid password",
+      "defaultValue": ""
+    }
+  ],
+  "createCompanyFields": [
+    {
+      "title": "Company name",
+      "id": "companyName",
+      "type": "text",
+      "name": "companyName",
+      "defaultValue": ""
+    }
+  ]
+}
